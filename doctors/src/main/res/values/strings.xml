@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Golden Hospital</string>
+    <string name="none">None</string>
+    <string name="designation">Designation</string>
+    <string name="name">Name</string>
+    <string name="todo">Todo</string>
+    <string name="doctor_details">Doctor</string>
+    <string name="age">Age</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="experience">Experience</string>
+    <string name="choose_profile_type">Choose Profile Type</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="date_joining">Date Joining</string>
+    <string name="patient_name">Name</string>
+    <string name="disease_type">Name of your Disease</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="reset">Reset</string>
+    <string name="log_in">Login</string>
+
+    <string name="medicines">Medicines</string>
+    <string name="doctors">Doctors</string>
+    <string name="patients">Patients</string>
+    <string name="services">Services</string>
+    <string name="beds">Beds</string>
+    <string name="ambulances">Ambulances</string>
+    <string name="nurses">Nurses</string>
+    <string name="canteen">Canteen</string>
+</resources>

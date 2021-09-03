@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:textSize="@dimen/_14sdp"
+            android:text="Enter your details : "
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/background_search"
+            android:backgroundTint="@color/colorDefault"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:weightSum="2">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_weight="0.2"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:src="@drawable/single_user_icon"
+                app:tint="@color/white"
+                android:contentDescription="@string/todo" />
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:background="@null"
+                android:hint="@string/patient_name"
+                android:inputType="text"
+                android:padding="@dimen/_3sdp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/_15ssp"
+                android:importantForAutofill="no" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/background_search"
+            android:backgroundTint="@color/colorDefault"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:weightSum="2">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_weight="0.2"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:src="@drawable/mobile"
+                app:tint="@color/white"
+                android:contentDescription="@string/todo" />
+
+            <EditText
+                android:id="@+id/stockArrive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:background="@null"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                android:padding="@dimen/_3sdp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/_15ssp"
+                android:importantForAutofill="no" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/background_search"
+            android:backgroundTint="@color/colorDefault"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:weightSum="2">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_weight="0.2"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:src="@drawable/disease"
+                app:tint="@color/white"
+                android:contentDescription="@string/todo" />
+
+            <EditText
+                android:id="@+id/diseaseType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:background="@null"
+                android:hint="@string/disease_type"
+                android:inputType="text"
+                android:padding="@dimen/_3sdp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/_15ssp"
+                android:importantForAutofill="no" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/background_search"
+            android:backgroundTint="@color/colorDefault"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:weightSum="2">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_weight="0.2"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:src="@drawable/email"
+                app:tint="@color/white"
+                android:contentDescription="@string/todo" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:background="@null"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/_3sdp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/_15ssp"
+                android:importantForAutofill="no" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/background_search"
+            android:backgroundTint="@color/colorDefault"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:weightSum="2">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_weight="0.2"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:src="@drawable/gender"
+                app:tint="@color/white"
+                android:contentDescription="@string/todo" />
+
+            <EditText
+                android:id="@+id/gender"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.8"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:background="@null"
+                android:hint="@string/choose_profile_type"
+                android:inputType="text"
+                android:padding="@dimen/_3sdp"
+                android:enabled="false"
+                android:textColor="@color/white"
+                android:textColorHint="@color/hint"
+                android:textSize="@dimen/_15ssp"
+                android:importantForAutofill="no" />
+
+
+        </LinearLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rowCount="4"
+            android:columnCount="2">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#EC6631"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_gravity="fill"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="@dimen/_6sdp"
+                app:cardCornerRadius="@dimen/_6sdp"
+                app:cardElevation="@dimen/_6sdp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
+                        android:src="@drawable/male"
+                        android:contentDescription="@string/todo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/male"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#1FD6C6"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_gravity="fill"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="@dimen/_6sdp"
+                app:cardCornerRadius="@dimen/_6sdp"
+                app:cardElevation="@dimen/_6sdp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
+                        android:src="@drawable/female"
+                        android:contentDescription="@string/todo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/female"
+                        android:textAlignment="center"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </GridLayout>
+
+    </LinearLayout>
+</layout>
