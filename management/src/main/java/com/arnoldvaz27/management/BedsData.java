@@ -4,6 +4,7 @@ import static com.arnoldvaz27.doctors.CustomToast.showToast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +23,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,6 +35,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,10 +54,11 @@ public class BedsData extends AppCompatActivity {
     ImageView addBeds;
     private AlertDialog dialogAddBed;
     private String BedItem;
-    String BedString;
+    String BedString,visit_user_id,Status,Floor,Room,Bed;
     private RecyclerView recyclerView;
     private DatabaseReference eventsRef;
-    private ProgressDialog loadingBar;
+    private ProgressBar loadingBar;
+    private BottomSheetDialog bottomSheetDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +67,7 @@ public class BedsData extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.beds_data);
         addBeds = binding.addBed;
         recyclerView = binding.RecyclerView;
+        loadingBar = binding.progressCircular;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventsRef = FirebaseDatabase.getInstance().getReference().child("Beds");
 
@@ -174,7 +181,7 @@ public class BedsData extends AppCompatActivity {
                 else
                 {
                     showToast(getApplicationContext(),"No Data",R.color.red);
-
+                    loadingBar.setVisibility(View.GONE);
                 }
 
             }
@@ -186,12 +193,7 @@ public class BedsData extends AppCompatActivity {
         });
     }
     private void display() {
-        loadingBar = new ProgressDialog(this);
-        loadingBar.setTitle("Displaying All The Beds");
-        loadingBar.setMessage("Please wait while we are fetching the details");
-        loadingBar.setCanceledOnTouchOutside(false);
-        loadingBar.getProgress();
-        loadingBar.show();
+
         FirebaseRecyclerOptions<Beds> options = new FirebaseRecyclerOptions.Builder<Beds>()
                 .setQuery(eventsRef, Beds.class).build();
 
@@ -199,7 +201,7 @@ public class BedsData extends AppCompatActivity {
                 new FirebaseRecyclerAdapter<Beds, BedDataHolder>(options) {
 
                     @Override
-                    protected void onBindViewHolder(@NonNull BedDataHolder holder, int position, @NonNull Beds model) {
+                    protected void onBindViewHolder(@NonNull BedDataHolder holder, @SuppressLint("RecyclerView") final int position, @NonNull Beds model) {
                         final String userIDs = getRef(position).getKey();
 
                         assert userIDs != null;
@@ -209,8 +211,8 @@ public class BedsData extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists() || dataSnapshot.hasChildren()) {
 
-                                    String Status = Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString();
-                                    String Floor = Objects.requireNonNull(dataSnapshot.child("floorNumber").getValue()).toString();
+                                    Status = Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString();
+                                    Floor = Objects.requireNonNull(dataSnapshot.child("floorNumber").getValue()).toString();
                                     holder.userFloor.setText("Floor Number: "+Floor);
                                     if(Status.equals("Available")){
                                         holder.userStatus.setTextColor(getResources().getColor(R.color.green));
@@ -218,13 +220,19 @@ public class BedsData extends AppCompatActivity {
                                         holder.userStatus.setTextColor(getResources().getColor(R.color.red));
                                     }
                                     holder.userStatus.setText("Status: "+Status);
-                                    loadingBar.dismiss();
+
+                                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            visit_user_id = getRef(position).getKey();
+                                            getDetails();
+                                        }
+                                    });
 
                                 } else {
                                     showToast(getApplicationContext(), "No Data", R.color.red);
-                                    loadingBar.hide();
                                 }
-
+                                loadingBar.setVisibility(View.GONE);
                             }
 
                             @Override
@@ -247,6 +255,27 @@ public class BedsData extends AppCompatActivity {
         adapter.startListening();
     }
 
+    private void getDetails() {
+        eventsRef.child(visit_user_id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Status = Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString();
+                    Floor = Objects.requireNonNull(dataSnapshot.child("floorNumber").getValue()).toString();
+                    Room = Objects.requireNonNull(dataSnapshot.child("bedNumber").getValue()).toString();
+                    Bed = Objects.requireNonNull(dataSnapshot.child("bedNumber").getValue()).toString();
+                    BottomSheet();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     public static class BedDataHolder extends RecyclerView.ViewHolder {
         TextView userFloor, userStatus;
         ImageView userImage;
@@ -258,5 +287,116 @@ public class BedsData extends AppCompatActivity {
             userStatus = itemView.findViewById(R.id.textStatus);
             userImage = itemView.findViewById(R.id.image);
         }
+    }
+    private void BottomSheet() {
+        bottomSheetDialog = new BottomSheetDialog(BedsData.this,R.style.BottomSheetTheme);
+        bottomSheetDialog.setCanceledOnTouchOutside(false);
+
+        final View sheetView = LayoutInflater.from(BedsData.this).inflate(R.layout.beds_bottomsheet, findViewById(R.id.layoutMoreOptions));
+
+        final CardView Edit,Discard,Close,Save,Delete;
+        final GridLayout editingGrid,viewingGrid;
+        final TextView bedNumber,roomNumber,floor,status;
+        final LinearLayout statusLayout;
+        String[] BedStrings;
+        Spinner BedChoose;
+
+        Edit = sheetView.findViewById(R.id.edit);
+        Discard = sheetView.findViewById(R.id.discard);
+        Close = sheetView.findViewById(R.id.close);
+        Save = sheetView.findViewById(R.id.save);
+        Delete = sheetView.findViewById(R.id.delete);
+        editingGrid = sheetView.findViewById(R.id.editingGrid);
+        viewingGrid = sheetView.findViewById(R.id.viewingGrid);
+        bedNumber = sheetView.findViewById(R.id.name);
+        roomNumber = sheetView.findViewById(R.id.roomNumber);
+        floor = sheetView.findViewById(R.id.floor);
+        status = sheetView.findViewById(R.id.status);
+        statusLayout = sheetView.findViewById(R.id.statusLayout);
+        BedChoose = sheetView.findViewById(R.id.statusChoose);
+
+        bedNumber.setText("Bed Number: "+Bed);
+        roomNumber.setText("Room Number: "+Room);
+        floor.setText("Floor Number: "+Floor);
+        status.setText("Status: "+Status);
+
+        BedStrings = getResources().getStringArray(R.array.BedStatus);
+
+        ArrayAdapter<String> adapterStream2 = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, BedStrings);
+        adapterStream2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        BedChoose.setAdapter(adapterStream2);
+        BedChoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                BedChoose.setSelection(i);
+                BedItem = adapterView.getItemAtPosition(i).toString();
+                BedString = BedItem;
+                status.setText(BedString);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        Edit.setOnClickListener(v -> {
+            bedNumber.setText(Bed);
+            roomNumber.setText(Room);
+            floor.setText(Floor);
+            status.setText(Status);
+            viewingGrid.setVisibility(View.GONE);
+            editingGrid.setVisibility(View.VISIBLE);
+            statusLayout.setVisibility(View.VISIBLE);
+        });
+        Close.setOnClickListener(v -> bottomSheetDialog.dismiss());
+        Save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(TextUtils.isEmpty(bedNumber.getText().toString()) || TextUtils.isEmpty(roomNumber.getText().toString()) ||
+                        TextUtils.isEmpty(floor.getText().toString()) || TextUtils.isEmpty(status.getText().toString())) {
+                    showToast(getApplicationContext(),"You need to add data in all fields in order to add Bed",R.color.red);
+                }else if(status.getText().toString().equals("Choose Status")){
+                    showToast(getApplicationContext(),"Status Invalid, Please select the correct status",R.color.red);
+                }else{
+                    bottomSheetDialog.dismiss();
+                    HashMap<String, Object> service = new HashMap<>();
+                    service.put("bedNumber", bedNumber.getText().toString());
+                    service.put("roomNumber", roomNumber.getText().toString());
+                    service.put("floorNumber", floor.getText().toString());
+                    service.put("status", status.getText().toString());
+                    eventsRef.child(visit_user_id).setValue(service).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                showToast(getApplicationContext(),"Data updated",R.color.green);
+                            }else{
+                                showToast(getApplicationContext(),"Please try again",R.color.red);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        Delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                eventsRef.child(visit_user_id).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            showToast(getApplicationContext(),"Data deleted",R.color.green);
+                        }else{
+                            showToast(getApplicationContext(),"Please try again",R.color.red);
+                        }
+                    }
+                });
+            }
+        });
+        Discard.setOnClickListener(v -> bottomSheetDialog.dismiss());
+
+        bottomSheetDialog.setContentView(sheetView);
+        bottomSheetDialog.show();
     }
 }

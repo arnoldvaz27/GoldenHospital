@@ -9,6 +9,8 @@
     <string name="floor">Floor Number</string>
     <string name="choose_status">Status</string>
     <string name="search_food_category">Search Food</string>
+    <string name="edit_status">Edit Status</string>
+    <string name="status">Status</string>
     <string-array name="BedStatus">
         <item>Choose Status</item>
         <item>Available</item>
