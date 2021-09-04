@@ -29,5 +29,11 @@ public class ManagementHome extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ServicesData.class));
             }
         });
+        findViewById(R.id.beds).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), BedsData.class));
+            }
+        });
     }
 }

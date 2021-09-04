@@ -4,6 +4,12 @@
 
     <application>
         <activity
+            android:name=".CanteenData"
+            android:exported="true" />
+        <activity
+            android:name=".BedsData"
+            android:exported="true" />
+        <activity
             android:name=".ServicesData"
             android:exported="true" />
         <activity

@@ -3,4 +3,15 @@
     <string name="start_date">Start Date</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    <string name="add_bed">Add Bed</string>
+    <string name="bed_number">Bed Number</string>
+    <string name="room_number">Room Number</string>
+    <string name="floor">Floor Number</string>
+    <string name="choose_status">Status</string>
+    <string name="search_food_category">Search Food</string>
+    <string-array name="BedStatus">
+        <item>Choose Status</item>
+        <item>Available</item>
+        <item>Booked</item>
+    </string-array>
 </resources>
