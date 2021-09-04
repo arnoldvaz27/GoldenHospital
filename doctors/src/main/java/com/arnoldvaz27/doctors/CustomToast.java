@@ -1,4 +1,4 @@
-package com.arnoldvaz27.goldenhospital;
+package com.arnoldvaz27.doctors;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

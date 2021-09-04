@@ -28,4 +28,15 @@
     <string name="ambulances">Ambulances</string>
     <string name="nurses">Nurses</string>
     <string name="canteen">Canteen</string>
+    <string name="example">Example</string>
+    <string name="search_doctors">Search Doctors</string>
+    <string name="gender">Gender</string>
+    <string name="close">Close</string>
+    <string name="edit_details">Edit Details</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="discard">Discard</string>
+    <string name="number">Mobile Number</string>
+    <string name="add_service">Add Service</string>
+    <string name="search_services">Search Services</string>
 </resources>

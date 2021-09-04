@@ -1,6 +1,6 @@
 package com.arnoldvaz27.goldenhospital;
 
-import static com.arnoldvaz27.goldenhospital.CustomToast.showToast;
+import static com.arnoldvaz27.doctors.CustomToast.showToast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -25,6 +26,8 @@ import android.widget.TextView;
 
 import com.arnoldvaz27.doctors.DoctorsHome;
 import com.arnoldvaz27.goldenhospital.databinding.RoleBinding;
+import com.arnoldvaz27.management.ManagementHome;
+import com.arnoldvaz27.nurses.NurseHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -59,19 +62,17 @@ public class Role extends AppCompatActivity {
     private ImageView hidden, visible;
     //doctor details
     private LinearLayout doctorLinear;
-    private EditText doctorName,doctorAge,doctorEmail,doctorPhoneNumber,doctorExperience;
-    private TextView doctorDesignation,doctorProfile;
-    private CardView doctorMale,doctorFemale;
+    private EditText doctorName, doctorAge, doctorEmail, doctorPhoneNumber, doctorExperience;
+    private TextView doctorDesignation, doctorProfile;
+    private CardView doctorMale, doctorFemale;
     private Button doctorReset, doctorSave;
     private ProgressBar doctorProgress;
-    //driver details
-    private LinearLayout driverLinear;
     //management details
     private LinearLayout managementLinear;
-    private EditText managementName,managementAge,managementEmail,managementPhoneNumber;
-    private TextView managementDesignation,managementDateJoin,managementProfile;
+    private EditText managementName, managementAge, managementEmail, managementPhoneNumber;
+    private TextView managementDesignation, managementDateJoin, managementProfile;
     private ImageView managementSelectDate;
-    private CardView managementMale,managementFemale;
+    private CardView managementMale, managementFemale;
     private Button managementReset, managementSave;
     private ProgressBar managementProgress;
     //nurse details
@@ -83,7 +84,7 @@ public class Role extends AppCompatActivity {
     private Button nurseReset, nurseSave;
     private ProgressBar nurseProgress;
 
-    private String currentUserId;
+    private String currentUserId, role;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -287,39 +288,51 @@ public class Role extends AppCompatActivity {
         mainProgress.setVisibility(View.VISIBLE);
         doctorProgress.setVisibility(View.VISIBLE);
         doctorSave.setVisibility(View.GONE);
-        HashMap<String, Object> management = new HashMap<>();
-        management.put("uid", currentUserId);
-        management.put("designation", doctorDesignation.getText().toString());
-        management.put("age", doctorAge.getText().toString());
-        management.put("email", doctorEmail.getText().toString());
-        management.put("phoneNumber", doctorPhoneNumber.getText().toString());
-        management.put("experience", doctorExperience.getText().toString());
-        management.put("profile", doctorProfile.getText().toString());
-        RootRef.child("Users").child(currentUserId).setValue(management).addOnCompleteListener(new OnCompleteListener<Void>() {
+        HashMap<String, Object> doctor = new HashMap<>();
+        doctor.put("uid", currentUserId);
+        doctor.put("name", doctorName.getText().toString());
+        doctor.put("designation", doctorDesignation.getText().toString());
+        doctor.put("age", doctorAge.getText().toString());
+        doctor.put("email", doctorEmail.getText().toString());
+        doctor.put("phoneNumber", doctorPhoneNumber.getText().toString());
+        doctor.put("experience", doctorExperience.getText().toString());
+        doctor.put("profile", doctorProfile.getText().toString());
+        RootRef.child("Users").child(currentUserId).setValue(doctor).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    HashMap<String, Object> nurse = new HashMap<>();
-                    nurse.put("uid", currentUserId);
-                    RootRef.child("Role").child("Doctor").child(currentUserId).setValue(nurse).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    HashMap<String, Object> doctor = new HashMap<>();
+                    doctor.put("uid", currentUserId);
+                    doctor.put("name", doctorName.getText().toString());
+                    doctor.put("designation", doctorDesignation.getText().toString());
+                    doctor.put("age", doctorAge.getText().toString());
+                    doctor.put("email", doctorEmail.getText().toString());
+                    doctor.put("phoneNumber", doctorPhoneNumber.getText().toString());
+                    doctor.put("experience", doctorExperience.getText().toString());
+                    doctor.put("profile", doctorProfile.getText().toString());
+                    RootRef.child("Role").child("Doctors").child(currentUserId).setValue(doctor).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
+                            if (task.isSuccessful()) {
+                                final SharedPreferences fieldsVisibility1 = getSharedPreferences("Role", MODE_PRIVATE);
+                                final SharedPreferences.Editor fieldsVisibility2 = fieldsVisibility1.edit();
+                                fieldsVisibility2.putString("type", "Doctors");
+                                fieldsVisibility2.apply();
                                 startActivity(new Intent(getApplicationContext(), DoctorsHome.class));
-                                finishAffinity();
                                 mainProgress.setVisibility(View.VISIBLE);
                                 doctorProgress.setVisibility(View.VISIBLE);
                                 doctorSave.setVisibility(View.GONE);
-                            }else{
-                                showToast(getApplicationContext(),"Error",R.color.red);
+                                finishAffinity();
+                            } else {
+                                showToast(getApplicationContext(), "Error", R.color.red);
                                 mainProgress.setVisibility(View.GONE);
                                 doctorProgress.setVisibility(View.GONE);
                                 doctorSave.setVisibility(View.VISIBLE);
                             }
                         }
                     });
-                }else{
-                    showToast(getApplicationContext(),"Data not saved",R.color.red);
+                } else {
+                    showToast(getApplicationContext(), "Data not saved", R.color.red);
                     mainProgress.setVisibility(View.GONE);
                     doctorProgress.setVisibility(View.GONE);
                     doctorSave.setVisibility(View.VISIBLE);
@@ -334,6 +347,7 @@ public class Role extends AppCompatActivity {
         managementSave.setVisibility(View.GONE);
         HashMap<String, Object> management = new HashMap<>();
         management.put("uid", currentUserId);
+        management.put("name", managementName.getText().toString());
         management.put("designation", managementDesignation.getText().toString());
         management.put("age", managementAge.getText().toString());
         management.put("email", managementEmail.getText().toString());
@@ -344,29 +358,98 @@ public class Role extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    HashMap<String, Object> nurse = new HashMap<>();
-                    nurse.put("uid", currentUserId);
-                    RootRef.child("Role").child("Management").child(currentUserId).setValue(nurse).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    HashMap<String, Object> management = new HashMap<>();
+                    management.put("uid", currentUserId);
+                    management.put("name", managementName.getText().toString());
+                    management.put("designation", managementDesignation.getText().toString());
+                    management.put("age", managementAge.getText().toString());
+                    management.put("email", managementEmail.getText().toString());
+                    management.put("phoneNumber", managementPhoneNumber.getText().toString());
+                    management.put("dateJoined", managementDateJoin.getText().toString());
+                    management.put("profile", managementProfile.getText().toString());
+                    RootRef.child("Role").child("Management").child(currentUserId).setValue(management).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                showToast(getApplicationContext(),"Successfully",R.color.green);
+                            if (task.isSuccessful()) {
+                                final SharedPreferences fieldsVisibility1 = getSharedPreferences("Role", MODE_PRIVATE);
+                                final SharedPreferences.Editor fieldsVisibility2 = fieldsVisibility1.edit();
+                                fieldsVisibility2.putString("type", "Management");
+                                fieldsVisibility2.apply();
+                                startActivity(new Intent(getApplicationContext(), ManagementHome.class));
                                 mainProgress.setVisibility(View.VISIBLE);
                                 managementProgress.setVisibility(View.VISIBLE);
                                 managementSave.setVisibility(View.GONE);
-                            }else{
-                                showToast(getApplicationContext(),"Error",R.color.red);
+                                finishAffinity();
+                            } else {
+                                showToast(getApplicationContext(), "Error", R.color.red);
                                 mainProgress.setVisibility(View.GONE);
                                 managementProgress.setVisibility(View.GONE);
                                 managementSave.setVisibility(View.VISIBLE);
                             }
                         }
                     });
-                }else{
-                    showToast(getApplicationContext(),"Data not saved",R.color.red);
+                } else {
+                    showToast(getApplicationContext(), "Data not saved", R.color.red);
                     mainProgress.setVisibility(View.GONE);
                     managementProgress.setVisibility(View.GONE);
                     managementSave.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void nurseSavingDetails() {
+        mainProgress.setVisibility(View.VISIBLE);
+        nurseProgress.setVisibility(View.VISIBLE);
+        nurseSave.setVisibility(View.GONE);
+        HashMap<String, Object> nurse = new HashMap<>();
+        nurse.put("uid", currentUserId);
+        nurse.put("name", nurseName.getText().toString());
+        nurse.put("designation", nurseDesignation.getText().toString());
+        nurse.put("age", nurseAge.getText().toString());
+        nurse.put("email", nurseEmail.getText().toString());
+        nurse.put("phoneNumber", nursePhoneNumber.getText().toString());
+        nurse.put("dateJoined", nurseDateJoin.getText().toString());
+        nurse.put("profile", nurseProfile.getText().toString());
+        RootRef.child("Users").child(currentUserId).setValue(nurse).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    HashMap<String, Object> nurse = new HashMap<>();
+                    nurse.put("uid", currentUserId);
+                    nurse.put("name", nurseName.getText().toString());
+                    nurse.put("designation", nurseDesignation.getText().toString());
+                    nurse.put("age", nurseAge.getText().toString());
+                    nurse.put("email", nurseEmail.getText().toString());
+                    nurse.put("phoneNumber", nursePhoneNumber.getText().toString());
+                    nurse.put("dateJoined", nurseDateJoin.getText().toString());
+                    nurse.put("profile", nurseProfile.getText().toString());
+                    RootRef.child("Role").child("Nurses").child(currentUserId).setValue(nurse).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                final SharedPreferences fieldsVisibility1 = getSharedPreferences("Role", MODE_PRIVATE);
+                                final SharedPreferences.Editor fieldsVisibility2 = fieldsVisibility1.edit();
+                                fieldsVisibility2.putString("type", "Nurse");
+                                fieldsVisibility2.apply();
+                                startActivity(new Intent(getApplicationContext(), NurseHome.class));
+                                mainProgress.setVisibility(View.VISIBLE);
+                                nurseProgress.setVisibility(View.VISIBLE);
+                                nurseSave.setVisibility(View.GONE);
+                                finishAffinity();
+                            } else {
+                                showToast(getApplicationContext(), "Error", R.color.red);
+                                mainProgress.setVisibility(View.GONE);
+                                nurseProgress.setVisibility(View.GONE);
+                                nurseSave.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+                } else {
+                    showToast(getApplicationContext(), "Data not saved", R.color.red);
+                    mainProgress.setVisibility(View.GONE);
+                    nurseProgress.setVisibility(View.GONE);
+                    nurseSave.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -421,50 +504,6 @@ public class Role extends AppCompatActivity {
         }
     }
 
-    private void nurseSavingDetails() {
-        mainProgress.setVisibility(View.VISIBLE);
-        nurseProgress.setVisibility(View.VISIBLE);
-        nurseSave.setVisibility(View.GONE);
-        HashMap<String, Object> nurse = new HashMap<>();
-        nurse.put("uid", currentUserId);
-        nurse.put("designation", nurseDesignation.getText().toString());
-        nurse.put("age", nurseAge.getText().toString());
-        nurse.put("email", nurseEmail.getText().toString());
-        nurse.put("phoneNumber", nursePhoneNumber.getText().toString());
-        nurse.put("dateJoined", nurseDateJoin.getText().toString());
-        nurse.put("profile", nurseProfile.getText().toString());
-        RootRef.child("Users").child(currentUserId).setValue(nurse).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    HashMap<String, Object> nurse = new HashMap<>();
-                    nurse.put("uid", currentUserId);
-                    RootRef.child("Role").child("Nurses").child(currentUserId).setValue(nurse).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                showToast(getApplicationContext(),"Successfully",R.color.green);
-                                mainProgress.setVisibility(View.VISIBLE);
-                                nurseProgress.setVisibility(View.VISIBLE);
-                                nurseSave.setVisibility(View.GONE);
-                            }else{
-                                showToast(getApplicationContext(),"Error",R.color.red);
-                                mainProgress.setVisibility(View.GONE);
-                                nurseProgress.setVisibility(View.GONE);
-                                nurseSave.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-                }else{
-                    showToast(getApplicationContext(),"Data not saved",R.color.red);
-                    mainProgress.setVisibility(View.GONE);
-                    nurseProgress.setVisibility(View.GONE);
-                    nurseSave.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-    }
-
     private void retrieveDetails() {
         RootRef.child("Users").child(currentUserId)
                 .addValueEventListener(new ValueEventListener() {
@@ -472,26 +511,16 @@ public class Role extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.child("designation").exists()) {
-                            String role = Objects.requireNonNull(dataSnapshot.child("designation").getValue()).toString();
+                            role = Objects.requireNonNull(dataSnapshot.child("designation").getValue()).toString();
                             switch (role) {
                                 case "Doctor":
-                                    doctorDesignation.setText(role);
-                                    userLinear.setVisibility(View.GONE);
-                                    doctorLinear.setVisibility(View.VISIBLE);
+                                    checkDoctor();
                                     break;
                                 case "Nurse":
-                                    nurseDesignation.setText(role);
-                                    userLinear.setVisibility(View.GONE);
-                                    nurseLinear.setVisibility(View.VISIBLE);
+                                    checkNurse();
                                     break;
                                 case "Management":
-                                    managementDesignation.setText(role);
-                                    userLinear.setVisibility(View.GONE);
-                                    managementLinear.setVisibility(View.VISIBLE);
-                                    break;
-                                case "Driver":
-                                    userLinear.setVisibility(View.GONE);
-                                    driverLinear.setVisibility(View.VISIBLE);
+                                    checkManagement();
                                     break;
                             }
                         } else {
@@ -504,7 +533,93 @@ public class Role extends AppCompatActivity {
 
                     }
                 });
+    }
 
+    private void checkManagement() {
+        RootRef.child("Users").child(currentUserId)
+                .addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child("name").exists() && dataSnapshot.child("designation").exists()
+                                && dataSnapshot.child("phoneNumber").exists() && dataSnapshot.child("profile").exists() &&
+                                dataSnapshot.child("dateJoined").exists() && dataSnapshot.child("email").exists() && dataSnapshot.child("age").exists()) {
+                            final SharedPreferences fieldsVisibility1 = getSharedPreferences("Role", MODE_PRIVATE);
+                            final SharedPreferences.Editor fieldsVisibility2 = fieldsVisibility1.edit();
+                            fieldsVisibility2.putString("type", "Management");
+                            fieldsVisibility2.apply();
+                            startActivity(new Intent(getApplicationContext(), DoctorsHome.class));
+                            finishAffinity();
+                        } else {
+                            managementDesignation.setText(role);
+                            userLinear.setVisibility(View.GONE);
+                            managementLinear.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        showToast(getApplicationContext(), "Error", R.color.red);
+                    }
+                });
+    }
+
+    private void checkNurse() {
+        RootRef.child("Users").child(currentUserId)
+                .addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child("name").exists() && dataSnapshot.child("designation").exists()
+                                && dataSnapshot.child("phoneNumber").exists() && dataSnapshot.child("profile").exists() &&
+                                dataSnapshot.child("dateJoined").exists() && dataSnapshot.child("email").exists() && dataSnapshot.child("age").exists()) {
+                            final SharedPreferences fieldsVisibility1 = getSharedPreferences("Role", MODE_PRIVATE);
+                            final SharedPreferences.Editor fieldsVisibility2 = fieldsVisibility1.edit();
+                            fieldsVisibility2.putString("type", "Nurse");
+                            fieldsVisibility2.apply();
+                            startActivity(new Intent(getApplicationContext(), DoctorsHome.class));
+                            finishAffinity();
+                        } else {
+                            nurseDesignation.setText(role);
+                            userLinear.setVisibility(View.GONE);
+                            nurseLinear.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        showToast(getApplicationContext(), "Error", R.color.red);
+                    }
+                });
+    }
+
+    private void checkDoctor() {
+        RootRef.child("Users").child(currentUserId)
+                .addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.child("name").exists() && dataSnapshot.child("designation").exists()
+                                && dataSnapshot.child("phoneNumber").exists() && dataSnapshot.child("profile").exists() &&
+                                dataSnapshot.child("experience").exists() && dataSnapshot.child("email").exists() && dataSnapshot.child("age").exists()) {
+                            final SharedPreferences fieldsVisibility1 = getSharedPreferences("Role", MODE_PRIVATE);
+                            final SharedPreferences.Editor fieldsVisibility2 = fieldsVisibility1.edit();
+                            fieldsVisibility2.putString("type", "Doctors");
+                            fieldsVisibility2.apply();
+                            startActivity(new Intent(getApplicationContext(), DoctorsHome.class));
+                            finishAffinity();
+                        } else {
+                            doctorDesignation.setText(role);
+                            userLinear.setVisibility(View.GONE);
+                            doctorLinear.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        showToast(getApplicationContext(), "Error", R.color.red);
+                    }
+                });
     }
 
     private void initViews() {
@@ -521,7 +636,6 @@ public class Role extends AppCompatActivity {
         progressBar = binding.userDetail.progressCircular;
         hidden = binding.userDetail.hidden;
         visible = binding.userDetail.visible;
-        driverLinear = binding.driverDetail.driverLinear;
 
         //nurse
         nurseLinear = binding.nurseDetail.nurseLinear;

@@ -185,11 +185,6 @@
                 layout="@layout/userdetails"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"/>
-            <include
-                android:id="@+id/driverDetail"
-                layout="@layout/driverdetail"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"/>
         </LinearLayout>
         </ScrollView>
 

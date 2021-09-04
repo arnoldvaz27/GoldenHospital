@@ -4,6 +4,12 @@
 
     <application>
         <activity
+            android:name=".DoctorsProfile"
+            android:exported="true" />
+        <activity
+            android:name=".DoctorsList"
+            android:exported="true" />
+        <activity
             android:name=".DoctorsHome"
             android:exported="true" />
     </application>
