@@ -11,7 +11,29 @@
     <string name="search_food_category">Search Food</string>
     <string name="edit_status">Edit Status</string>
     <string name="status">Status</string>
+    <string name="search_ambulances">Search Ambulance</string>
+    <string name="add_ambulance">Add Ambulance</string>
+    <string name="enter_number_plate">Enter number plate</string>
+    <string name="enter_number_of_persons">Enter number of persons</string>
+    <string name="enter_phone_number">Enter phone number</string>
+    <string name="persons">Persons</string>
+    <string name="add_canteen">Add Food</string>
+    <string name="food_name">Food Name</string>
+    <string name="price">Price</string>
+    <string name="edit_price">Edit Price</string>
+    <string name="search_medicines">Search Medicine</string>
+    <string name="add_medicine">Add Medicine</string>
+    <string name="name_of_medicine">Name of medicine</string>
+    <string name="enter_stock_of_medicine">Stock of medicine</string>
+    <string name="enter_stock_expiry_date">Expiry date</string>
+    <string name="stock_arrived">Arrived date</string>
     <string-array name="BedStatus">
+        <item>Choose Status</item>
+        <item>Available</item>
+        <item>Booked</item>
+    </string-array>
+
+    <string-array name="AmbulanceStatus">
         <item>Choose Status</item>
         <item>Available</item>
         <item>Booked</item>

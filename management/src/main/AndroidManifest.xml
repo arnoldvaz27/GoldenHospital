@@ -4,6 +4,12 @@
 
     <application>
         <activity
+            android:name=".MedicineData"
+            android:exported="true" />
+        <activity
+            android:name=".AmbulanceData"
+            android:exported="true" />
+        <activity
             android:name=".CanteenData"
             android:exported="true" />
         <activity

@@ -35,5 +35,23 @@ public class ManagementHome extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), BedsData.class));
             }
         });
+        findViewById(R.id.ambulances).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), AmbulanceData.class));
+            }
+        });
+        findViewById(R.id.canteen).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), CanteenData.class));
+            }
+        });
+        findViewById(R.id.medicines).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MedicineData.class));
+            }
+        });
     }
 }

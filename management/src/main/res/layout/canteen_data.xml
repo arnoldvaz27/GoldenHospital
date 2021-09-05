@@ -1,107 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CanteenData">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/header_title"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:background="@color/pink"
-        android:weightSum="2">
+        android:layout_height="match_parent"
+        tools:context=".CanteenData">
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/header_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:includeFontPadding="false"
-            android:text="@string/canteen"
-            android:padding="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_18ssp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/pink"
+            android:weightSum="2">
 
-        <ImageView
-            android:id="@+id/info"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:includeFontPadding="false"
+                android:text="@string/canteen"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18ssp" />
+
+            <ImageView
+                android:id="@+id/info"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:src="@drawable/info_stylish"
+                app:tint="@color/white"
+                android:contentDescription="@string/todo" />
+
+            <ImageView
+                android:id="@+id/addFood"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/add_outline"
+                app:tint="@color/white"
+                android:contentDescription="@string/todo" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LayoutSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header_title"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:background="@drawable/background_search"
+            android:backgroundTint="@color/red"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/_8sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:weightSum="2">
+
+            <ImageView
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
+                android:layout_weight="0"
+                android:contentDescription="@string/example"
+                android:src="@drawable/search"
+                app:tint="@color/colorSearchIcon" />
+
+
+            <EditText
+                android:id="@+id/inputSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:layout_weight="1.8"
+                android:background="@null"
+                android:hint="@string/search_food_category"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:includeFontPadding="false"
+                android:inputType="text"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="@dimen/_13ssp" />
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progress_circular"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:src="@drawable/info_stylish"
-            app:tint="@color/white"
-            android:contentDescription="@string/todo" />
-
-        <ImageView
-            android:id="@+id/addFood"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:src="@drawable/add_outline"
-            app:tint="@color/white"
-            android:contentDescription="@string/todo" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LayoutSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header_title"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
-        android:background="@drawable/background_search"
-        android:backgroundTint="@color/red"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="@dimen/_8sdp"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:weightSum="2">
-
-        <ImageView
-            android:layout_width="@dimen/_22sdp"
-            android:layout_height="@dimen/_22sdp"
-            android:layout_weight="0"
-            android:contentDescription="@string/example"
-            android:src="@drawable/search"
-            app:tint="@color/colorSearchIcon" />
-
-
-        <EditText
-            android:id="@+id/inputSearch"
-            android:layout_width="wrap_content"
+            android:layout_below="@id/LayoutSearch"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:indeterminateTint="@color/red" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginEnd="@dimen/_7sdp"
-            android:layout_weight="1.8"
-            android:background="@null"
-            android:hint="@string/search_food_category"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:includeFontPadding="false"
-            android:inputType="text"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="@dimen/_13ssp" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_2sdp"
-        android:layout_below="@id/LayoutSearch"
-        android:layout_marginEnd="@dimen/_2sdp"
-        android:clipToPadding="false"
-        android:paddingStart="0dp"
-        android:paddingEnd="@dimen/_12sdp"
-        android:paddingBottom="@dimen/_12sdp" />
+            android:layout_below="@id/progress_circular"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:clipToPadding="false"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/_12sdp"
+            android:paddingBottom="@dimen/_12sdp" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

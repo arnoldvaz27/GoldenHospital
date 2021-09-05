@@ -71,6 +71,8 @@ public class BedsData extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventsRef = FirebaseDatabase.getInstance().getReference().child("Beds");
 
+        bottomSheetDialog = new BottomSheetDialog(BedsData.this,R.style.BottomSheetTheme);
+        bottomSheetDialog.setCanceledOnTouchOutside(false);
         VerifyData();
 
         addBeds.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +173,7 @@ public class BedsData extends AppCompatActivity {
 
     }
     private void VerifyData() {
+        bottomSheetDialog.dismiss();
         eventsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -183,7 +186,6 @@ public class BedsData extends AppCompatActivity {
                     showToast(getApplicationContext(),"No Data",R.color.red);
                     loadingBar.setVisibility(View.GONE);
                 }
-
             }
 
             @Override
@@ -289,8 +291,6 @@ public class BedsData extends AppCompatActivity {
         }
     }
     private void BottomSheet() {
-        bottomSheetDialog = new BottomSheetDialog(BedsData.this,R.style.BottomSheetTheme);
-        bottomSheetDialog.setCanceledOnTouchOutside(false);
 
         final View sheetView = LayoutInflater.from(BedsData.this).inflate(R.layout.beds_bottomsheet, findViewById(R.id.layoutMoreOptions));
 
@@ -349,7 +349,8 @@ public class BedsData extends AppCompatActivity {
             editingGrid.setVisibility(View.VISIBLE);
             statusLayout.setVisibility(View.VISIBLE);
         });
-        Close.setOnClickListener(v -> bottomSheetDialog.dismiss());
+        Close.setOnClickListener(v ->
+                bottomSheetDialog.dismiss());
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -360,6 +361,7 @@ public class BedsData extends AppCompatActivity {
                     showToast(getApplicationContext(),"Status Invalid, Please select the correct status",R.color.red);
                 }else{
                     bottomSheetDialog.dismiss();
+                    VerifyData();
                     HashMap<String, Object> service = new HashMap<>();
                     service.put("bedNumber", bedNumber.getText().toString());
                     service.put("roomNumber", roomNumber.getText().toString());
@@ -382,6 +384,7 @@ public class BedsData extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
+                VerifyData();
                 eventsRef.child(visit_user_id).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -394,7 +397,8 @@ public class BedsData extends AppCompatActivity {
                 });
             }
         });
-        Discard.setOnClickListener(v -> bottomSheetDialog.dismiss());
+        Discard.setOnClickListener(v ->
+                bottomSheetDialog.dismiss());
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
