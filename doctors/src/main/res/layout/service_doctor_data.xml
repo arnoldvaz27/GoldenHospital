@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ServicesData">
+        tools:context=".ServiceDoctorData">
 
         <LinearLayout
             android:id="@+id/header_title"
@@ -31,20 +31,12 @@
                 android:id="@+id/info"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:src="@drawable/info_stylish"
                 app:tint="@color/white"
                 android:contentDescription="@string/todo" />
 
-            <ImageView
-                android:id="@+id/addService"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/add_outline"
-                app:tint="@color/white"
-                android:contentDescription="@string/todo" />
 
         </LinearLayout>
 

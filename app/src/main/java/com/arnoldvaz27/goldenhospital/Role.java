@@ -548,7 +548,7 @@ public class Role extends AppCompatActivity {
                             final SharedPreferences.Editor fieldsVisibility2 = fieldsVisibility1.edit();
                             fieldsVisibility2.putString("type", "Management");
                             fieldsVisibility2.apply();
-                            startActivity(new Intent(getApplicationContext(), DoctorsHome.class));
+                            startActivity(new Intent(getApplicationContext(), ManagementHome.class));
                             finishAffinity();
                         } else {
                             managementDesignation.setText(role);
@@ -577,7 +577,7 @@ public class Role extends AppCompatActivity {
                             final SharedPreferences.Editor fieldsVisibility2 = fieldsVisibility1.edit();
                             fieldsVisibility2.putString("type", "Nurse");
                             fieldsVisibility2.apply();
-                            startActivity(new Intent(getApplicationContext(), DoctorsHome.class));
+                            startActivity(new Intent(getApplicationContext(), NurseHome.class));
                             finishAffinity();
                         } else {
                             nurseDesignation.setText(role);

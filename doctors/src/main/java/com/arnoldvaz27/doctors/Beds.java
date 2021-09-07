@@ -1,4 +1,4 @@
-package com.arnoldvaz27.management;
+package com.arnoldvaz27.doctors;
 
 public class Beds {
     public String floor,status;

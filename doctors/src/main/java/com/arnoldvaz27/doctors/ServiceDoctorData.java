@@ -1,4 +1,4 @@
-package com.arnoldvaz27.management;
+package com.arnoldvaz27.doctors;
 
 import static com.arnoldvaz27.doctors.CustomToast.showToast;
 
@@ -10,44 +10,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.arnoldvaz27.doctors.Services;
-import com.arnoldvaz27.management.databinding.ServicesDataBinding;
+import com.arnoldvaz27.doctors.databinding.ServiceDoctorDataBinding;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
 
-public class ServicesData extends AppCompatActivity {
+public class ServiceDoctorData extends AppCompatActivity {
 
-    ServicesDataBinding binding;
+    ServiceDoctorDataBinding binding;
     ImageView addService;
     private AlertDialog dialogAddService;
     EditText serviceName, startDate,inputSearch;
@@ -56,15 +44,12 @@ public class ServicesData extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DatabaseReference eventsRef;
     private ProgressBar loadingBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(getResources().getColor(R.color.purple_200));
         getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
-        binding = DataBindingUtil.setContentView(this, R.layout.services_data);
-
-        addService = binding.addService;
+        binding = DataBindingUtil.setContentView(this, R.layout.service_doctor_data);
         recyclerView = binding.RecyclerView;
         inputSearch = binding.inputSearch;
         loadingBar = binding.progressCircular;
@@ -96,70 +81,6 @@ public class ServicesData extends AppCompatActivity {
             }
         });
 
-        addService.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dialogAddService == null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ServicesData.this);
-                    View view = LayoutInflater.from(ServicesData.this).inflate(
-                            R.layout.layout_add_servicedata, findViewById(R.id.layoutAddAmbulanceContainer)
-                    );
-                    builder.setView(view);
-
-                    dialogAddService = builder.create();
-                    if (dialogAddService.getWindow() != null) {
-                        dialogAddService.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                    }
-
-                    serviceName = view.findViewById(R.id.serviceName);
-                    startDate = view.findViewById(R.id.startDate);
-                    startDateImage = view.findViewById(R.id.startDateImage);
-
-                    serviceName.setSelection(serviceName.getText().length());
-                    serviceName.requestFocus();
-                    serviceName.getShowSoftInputOnFocus();
-
-                    startDateImage.setOnClickListener(v12 -> Click(startDateImage));
-
-                    view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (TextUtils.isEmpty(serviceName.getText().toString()) || TextUtils.isEmpty(startDate.getText().toString())
-                            ) {
-                                showToast(getApplicationContext(), "Please enter all the fields", R.color.red);
-                            } else {
-                                HashMap<String, Object> service = new HashMap<>();
-                                service.put("date", startDate.getText().toString());
-                                service.put("name", serviceName.getText().toString());
-
-                                String value = new SimpleDateFormat("ddMMyyyyHH:mm:ssa", Locale.getDefault()).format(new Date());
-                                eventsRef.child(value).setValue(service).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            serviceName.setText("");
-                                            startDate.setText("");
-                                            showToast(getApplicationContext(),"Data added",R.color.green);
-                                            dialogAddService.dismiss();
-                                        }else{
-                                            showToast(getApplicationContext(),"Please try again",R.color.red);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
-
-                    view.findViewById(R.id.textCancel).setOnClickListener(v1 -> {
-                        dialogAddService.dismiss();
-
-                    });
-                }
-                dialogAddService.getWindow().setSoftInputMode(
-                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                dialogAddService.show();
-            }
-        });
     }
 
     private void findSpecific() {
@@ -290,25 +211,6 @@ public class ServicesData extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         adapter.startListening();
     }
-
-    public void Click(View v) {
-
-        if (v == startDateImage) {
-
-            // Get Current Date
-            final Calendar c = Calendar.getInstance();
-            int mYear = c.get(Calendar.YEAR);
-            int mMonth = c.get(Calendar.MONTH);
-            int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
-            @SuppressLint("SetTextI18n") DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                    (view, year, monthOfYear, dayOfMonth) -> startDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year), mYear, mMonth, mDay);
-            datePickerDialog.show();
-        }
-
-    }
-
     public static class ServiceDataHolder extends RecyclerView.ViewHolder {
         TextView userName, userDate;
         ImageView userImage;

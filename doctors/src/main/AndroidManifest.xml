@@ -4,6 +4,21 @@
 
     <application>
         <activity
+            android:name=".CanteenDoctorData"
+            android:exported="true" />
+        <activity
+            android:name=".ServiceDoctorData"
+            android:exported="true" />
+        <activity
+            android:name=".MedicinesDoctorData"
+            android:exported="true" />
+        <activity
+            android:name=".AmbulanceDoctorData"
+            android:exported="true" />
+        <activity
+            android:name=".BedsDoctorsData"
+            android:exported="true" />
+        <activity
             android:name=".DoctorsProfile"
             android:exported="true" />
         <activity

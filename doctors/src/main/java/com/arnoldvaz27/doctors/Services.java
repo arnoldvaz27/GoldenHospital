@@ -1,4 +1,4 @@
-package com.arnoldvaz27.management;
+package com.arnoldvaz27.doctors;
 
 public class Services {
     public String name,date;

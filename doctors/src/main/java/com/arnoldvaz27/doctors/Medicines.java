@@ -1,4 +1,4 @@
-package com.arnoldvaz27.management;
+package com.arnoldvaz27.doctors;
 
 public class Medicines {
     public String name,stock,stockArrived,stockExpiry;

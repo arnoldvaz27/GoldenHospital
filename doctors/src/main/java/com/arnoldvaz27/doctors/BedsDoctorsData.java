@@ -1,4 +1,4 @@
-package com.arnoldvaz27.management;
+package com.arnoldvaz27.doctors;
 
 import static com.arnoldvaz27.doctors.CustomToast.showToast;
 
@@ -11,16 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,8 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.arnoldvaz27.doctors.Beds;
-import com.arnoldvaz27.management.databinding.BedsDataBinding;
+import com.arnoldvaz27.doctors.databinding.BedsDoctorsDataBinding;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,17 +37,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
 
-public class BedsData extends AppCompatActivity {
+public class BedsDoctorsData extends AppCompatActivity {
 
-    BedsDataBinding binding;
-    ImageView addBeds;
-    private AlertDialog dialogAddBed;
+    BedsDoctorsDataBinding binding;
     private String BedItem;
     String BedString,visit_user_id,Status,Floor,Room,Bed;
     private RecyclerView recyclerView;
@@ -63,113 +54,16 @@ public class BedsData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(getResources().getColor(R.color.dark_red));
         getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
-        binding = DataBindingUtil.setContentView(this,R.layout.beds_data);
-        addBeds = binding.addBed;
+        setContentView(R.layout.beds_doctors_data);
+        binding = DataBindingUtil.setContentView(this,R.layout.beds_doctors_data);
         recyclerView = binding.RecyclerView;
         loadingBar = binding.progressCircular;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventsRef = FirebaseDatabase.getInstance().getReference().child("Beds");
 
-        bottomSheetDialog = new BottomSheetDialog(BedsData.this,R.style.BottomSheetTheme);
+        bottomSheetDialog = new BottomSheetDialog(BedsDoctorsData.this,R.style.BottomSheetTheme);
         bottomSheetDialog.setCanceledOnTouchOutside(false);
         VerifyData();
-
-        addBeds.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (dialogAddBed == null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(BedsData.this);
-                    View view = LayoutInflater.from(BedsData.this).inflate(
-                            R.layout.layout_add_bed, findViewById(R.id.layoutAddBedContainer)
-                    );
-                    builder.setView(view);
-
-                    dialogAddBed = builder.create();
-                    if (dialogAddBed.getWindow() != null) {
-                        dialogAddBed.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                    }
-
-                    final EditText bedNumber,roomNumber,floor;
-                    final TextView status;
-                    String[] BedStrings;
-                    Spinner BedChoose;
-                    bedNumber = view.findViewById(R.id.name);
-                    roomNumber = view.findViewById(R.id.roomNumber);
-                    floor = view.findViewById(R.id.floor);
-                    status = view.findViewById(R.id.status);
-                    BedChoose = view.findViewById(R.id.statusChoose);
-                    BedStrings = getResources().getStringArray(R.array.BedStatus);
-                    bedNumber.setSelection(bedNumber.getText().length());
-                    bedNumber.requestFocus();
-                    bedNumber.getShowSoftInputOnFocus();
-                    ArrayAdapter<String> adapterStream2 = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, BedStrings);
-                    adapterStream2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    BedChoose.setAdapter(adapterStream2);
-                    BedChoose.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            BedChoose.setSelection(i);
-                            BedItem = adapterView.getItemAtPosition(i).toString();
-                            BedString = BedItem;
-                            status.setText(BedString);
-
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-
-                    view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if(TextUtils.isEmpty(bedNumber.getText().toString()) ||TextUtils.isEmpty(roomNumber.getText().toString()) ||
-                                    TextUtils.isEmpty(floor.getText().toString())){
-                                showToast(getApplicationContext(),"Please enter details in all the fields",R.color.red);
-                            }
-                            else if(status.getText().toString().equals("Choose Status")){
-                                showToast(getApplicationContext(),"Status Invalid, Please select the correct status",R.color.red);
-                            }
-                            else{
-                                HashMap<String, Object> service = new HashMap<>();
-                                service.put("bedNumber", bedNumber.getText().toString());
-                                service.put("roomNumber", roomNumber.getText().toString());
-                                service.put("floorNumber", floor.getText().toString());
-                                service.put("status", status.getText().toString());
-
-                                String value = new SimpleDateFormat("ddMMyyyyHH:mm:ssa", Locale.getDefault()).format(new Date());
-                                eventsRef.child(value).setValue(service).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            bedNumber.setText("");
-                                            roomNumber.setText("");
-                                            floor.setText("");
-                                            status.setText("");
-                                            showToast(getApplicationContext(),"Data added",R.color.green);
-                                            dialogAddBed.dismiss();
-                                        }else{
-                                            showToast(getApplicationContext(),"Please try again",R.color.red);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
-
-                    view.findViewById(R.id.textCancel).setOnClickListener(v1 -> {
-                        dialogAddBed.dismiss();
-
-                    });
-                }
-                dialogAddBed.getWindow().setSoftInputMode(
-                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                dialogAddBed.show();
-            }
-        });
-
     }
     private void VerifyData() {
         bottomSheetDialog.dismiss();
@@ -291,7 +185,7 @@ public class BedsData extends AppCompatActivity {
     }
     private void BottomSheet() {
 
-        final View sheetView = LayoutInflater.from(BedsData.this).inflate(R.layout.beds_bottomsheet, findViewById(R.id.layoutMoreOptions));
+        final View sheetView = LayoutInflater.from(BedsDoctorsData.this).inflate(R.layout.beds_bottomsheet, findViewById(R.id.layoutMoreOptions));
 
         final CardView Edit,Discard,Close,Save,Delete;
         final GridLayout editingGrid,viewingGrid;

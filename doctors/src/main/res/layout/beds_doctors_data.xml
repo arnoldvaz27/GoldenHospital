@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ServicesData">
+        tools:context=".BedsDoctorsData">
 
         <LinearLayout
             android:id="@+id/header_title"
@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:background="@color/purple_200"
+            android:background="@color/dark_red"
             android:weightSum="2">
 
             <TextView
@@ -22,8 +22,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:includeFontPadding="false"
-                android:text="@string/services"
                 android:padding="@dimen/_10sdp"
+                android:text="@string/beds"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_18ssp" />
 
@@ -31,18 +31,9 @@
                 android:id="@+id/info"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:src="@drawable/info_stylish"
-                app:tint="@color/white"
-                android:contentDescription="@string/todo" />
-
-            <ImageView
-                android:id="@+id/addService"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/add_outline"
                 app:tint="@color/white"
                 android:contentDescription="@string/todo" />
 
@@ -73,6 +64,7 @@
                 android:src="@drawable/search"
                 app:tint="@color/colorSearchIcon" />
 
+
             <EditText
                 android:id="@+id/inputSearch"
                 android:layout_width="wrap_content"
@@ -81,7 +73,7 @@
                 android:layout_marginEnd="@dimen/_7sdp"
                 android:layout_weight="1.8"
                 android:background="@null"
-                android:hint="@string/search_services"
+                android:hint="@string/search_beds"
                 android:imeOptions="actionDone"
                 android:importantForAutofill="no"
                 android:includeFontPadding="false"
@@ -102,6 +94,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:indeterminateTint="@color/red" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecyclerView"
             android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.arnoldvaz27.management;
+package com.arnoldvaz27.doctors;
 
 public class Ambulances {
     public String numberPlate,persons,email,phoneNumber,status;

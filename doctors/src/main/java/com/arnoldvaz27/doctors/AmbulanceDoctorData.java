@@ -1,4 +1,4 @@
-package com.arnoldvaz27.management;
+package com.arnoldvaz27.doctors;
 
 import static com.arnoldvaz27.doctors.CustomToast.showToast;
 
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,7 +18,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -30,8 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.arnoldvaz27.doctors.Ambulances;
-import com.arnoldvaz27.management.databinding.AmbulanceDataBinding;
+import com.arnoldvaz27.doctors.databinding.AmbulanceDoctorDataBinding;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,17 +40,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AmbulanceData extends AppCompatActivity {
+public class AmbulanceDoctorData extends AppCompatActivity {
 
-    AmbulanceDataBinding binding;
+    AmbulanceDoctorDataBinding binding;
     private AlertDialog dialogAddAmbulance;
     private RecyclerView recyclerView;
     private DatabaseReference eventsRef;
@@ -69,14 +63,13 @@ public class AmbulanceData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(getResources().getColor(R.color.purple));
         getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
-        binding = DataBindingUtil.setContentView(this, R.layout.ambulance_data);
-        ImageView addAmbulance = binding.addAmbulance;
+        binding = DataBindingUtil.setContentView(this, R.layout.ambulance_doctor_data);
         recyclerView = binding.RecyclerView;
         loadingBar = binding.progressCircular;
         inputSearch = binding.inputSearch;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventsRef = FirebaseDatabase.getInstance().getReference().child("Ambulance");
-        bottomSheetDialog = new BottomSheetDialog(AmbulanceData.this, R.style.BottomSheetTheme);
+        bottomSheetDialog = new BottomSheetDialog(AmbulanceDoctorData.this, R.style.BottomSheetTheme);
         bottomSheetDialog.setCanceledOnTouchOutside(false);
         VerifyData();
 
@@ -101,113 +94,7 @@ public class AmbulanceData extends AppCompatActivity {
                 }
             }
         });
-        addAmbulance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (dialogAddAmbulance == null) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AmbulanceData.this);
-                    View view = LayoutInflater.from(AmbulanceData.this).inflate(
-                            R.layout.layout_add_ambulance, findViewById(R.id.layoutAddAmbulanceContainer)
-                    );
-                    builder.setView(view);
-
-                    dialogAddAmbulance = builder.create();
-                    if (dialogAddAmbulance.getWindow() != null) {
-                        dialogAddAmbulance.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                    }
-
-                    final EditText inputNumberPlate, persons, email, phoneNumber;
-                    final TextView status;
-                    String[] AmbulanceStatus;
-                    Spinner AmbulanceChooseStatus;
-                    inputNumberPlate = view.findViewById(R.id.inputNumberPlate);
-                    persons = view.findViewById(R.id.persons);
-                    email = view.findViewById(R.id.floor);
-                    phoneNumber = view.findViewById(R.id.phone);
-                    status = view.findViewById(R.id.status);
-                    AmbulanceChooseStatus = view.findViewById(R.id.statusChoose);
-                    AmbulanceStatus = getResources().getStringArray(R.array.AmbulanceStatus);
-
-                    inputNumberPlate.setSelection(inputNumberPlate.getText().length());
-                    inputNumberPlate.requestFocus();
-                    inputNumberPlate.getShowSoftInputOnFocus();
-                    ArrayAdapter<String> adapterStream2 = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, AmbulanceStatus);
-                    adapterStream2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    AmbulanceChooseStatus.setAdapter(adapterStream2);
-                    AmbulanceChooseStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            AmbulanceChooseStatus.setSelection(i);
-                            ambulanceStatusItem = adapterView.getItemAtPosition(i).toString();
-                            ambulanceStatusString = ambulanceStatusItem;
-                            status.setText(ambulanceStatusString);
-
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                        }
-                    });
-
-                    view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            Matcher matcher1 = pattern1.matcher(email.getText().toString());
-
-                            if (TextUtils.isEmpty(inputNumberPlate.getText().toString()) || TextUtils.isEmpty(persons.getText().toString()) ||
-                                    TextUtils.isEmpty(email.getText().toString()) || TextUtils.isEmpty(phoneNumber.getText().toString())) {
-                                showToast(getApplicationContext(), "Please enter details in all the fields", R.color.red);
-                            } else if (status.getText().toString().equals("Choose Status")) {
-                                showToast(getApplicationContext(), "Status Invalid, Please select the correct status", R.color.red);
-                            } else if (!matcher1.matches()) {
-                                showToast(getApplicationContext(), "Invalid Email, please provide valid email", R.color.red);
-                            } else if (phoneNumber.getText().toString().length() > 10 || phoneNumber.getText().toString().length() < 10) {
-                                showToast(getApplicationContext(), "Please provide valid 10 digit phone number", R.color.red);
-                            } else {
-
-                                HashMap<String, Object> service = new HashMap<>();
-                                service.put("numberPlate", inputNumberPlate.getText().toString());
-                                service.put("persons", persons.getText().toString());
-                                service.put("email", email.getText().toString());
-                                service.put("phoneNumber", phoneNumber.getText().toString());
-                                service.put("status", status.getText().toString());
-
-                                String value = new SimpleDateFormat("ddMMyyyyHH:mm:ssa", Locale.getDefault()).format(new Date());
-                                eventsRef.child(value).setValue(service).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            inputNumberPlate.setText("");
-                                            persons.setText("");
-                                            email.setText("");
-                                            phoneNumber.setText("");
-                                            status.setText("");
-                                            showToast(getApplicationContext(), "Data added", R.color.green);
-                                            dialogAddAmbulance.dismiss();
-                                        } else {
-                                            showToast(getApplicationContext(), "Please try again", R.color.red);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
-
-                    view.findViewById(R.id.textCancel).setOnClickListener(v1 -> {
-                        dialogAddAmbulance.dismiss();
-
-                    });
-                }
-                dialogAddAmbulance.getWindow().setSoftInputMode(
-                        WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                dialogAddAmbulance.show();
-            }
-        });
     }
-
     private void findSpecific() {
         FirebaseRecyclerOptions<Ambulances> options = new FirebaseRecyclerOptions.Builder<Ambulances>()
                 .setQuery(eventsRef, Ambulances.class).build();
@@ -403,7 +290,7 @@ public class AmbulanceData extends AppCompatActivity {
 
     private void BottomSheet() {
 
-        final View sheetView = LayoutInflater.from(AmbulanceData.this).inflate(R.layout.ambulance_bottomsheet, findViewById(R.id.layoutMoreOptions));
+        final View sheetView = LayoutInflater.from(AmbulanceDoctorData.this).inflate(R.layout.ambulance_bottomsheet, findViewById(R.id.layoutMoreOptions));
 
         final CardView Close, Delete, Edit, Save, Discard;
         final GridLayout editingGrid, viewingGrid;
@@ -519,7 +406,6 @@ public class AmbulanceData extends AppCompatActivity {
             }
         });
         Discard.setOnClickListener(v -> bottomSheetDialog.cancel());
-
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();

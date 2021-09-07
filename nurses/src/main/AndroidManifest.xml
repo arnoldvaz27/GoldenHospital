@@ -4,6 +4,18 @@
 
     <application>
         <activity
+            android:name=".CanteenNurseData"
+            android:exported="true" />
+        <activity
+            android:name=".MedicineNurseData"
+            android:exported="true" />
+        <activity
+            android:name=".BedsNurseData"
+            android:exported="true" />
+        <activity
+            android:name=".AmbulanceNurseData"
+            android:exported="true" />
+        <activity
             android:name=".NurseHome"
             android:exported="true" />
     </application>
