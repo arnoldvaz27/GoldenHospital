@@ -11,9 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,27 +57,62 @@ public class BedsData extends AppCompatActivity {
     ImageView addBeds;
     private AlertDialog dialogAddBed;
     private String BedItem;
-    String BedString,visit_user_id,Status,Floor,Room,Bed;
+    ImageView info;
+    private EditText inputSearch;
+
+    String BedString, visit_user_id, Status, Floor, Room, Bed, search;
     private RecyclerView recyclerView;
     private DatabaseReference eventsRef;
     private ProgressBar loadingBar;
     private BottomSheetDialog bottomSheetDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(getResources().getColor(R.color.dark_red));
         getWindow().setNavigationBarColor(getResources().getColor(R.color.white));
-        binding = DataBindingUtil.setContentView(this,R.layout.beds_data);
+        binding = DataBindingUtil.setContentView(this, R.layout.beds_data);
         addBeds = binding.addBed;
+        info = binding.info;
+
         recyclerView = binding.RecyclerView;
         loadingBar = binding.progressCircular;
+        inputSearch = binding.inputSearch;
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventsRef = FirebaseDatabase.getInstance().getReference().child("Beds");
 
-        bottomSheetDialog = new BottomSheetDialog(BedsData.this,R.style.BottomSheetTheme);
+        bottomSheetDialog = new BottomSheetDialog(BedsData.this, R.style.BottomSheetTheme);
         bottomSheetDialog.setCanceledOnTouchOutside(false);
         VerifyData();
 
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals("")) {
+                    search = s.toString();
+                    findSpecific();
+                } else {
+                    VerifyData();
+                }
+            }
+        });
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Info();
+            }
+        });
         addBeds.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +129,7 @@ public class BedsData extends AppCompatActivity {
                         dialogAddBed.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                     }
 
-                    final EditText bedNumber,roomNumber,floor;
+                    final EditText bedNumber, roomNumber, floor;
                     final TextView status;
                     String[] BedStrings;
                     Spinner BedChoose;
@@ -125,14 +164,12 @@ public class BedsData extends AppCompatActivity {
                     view.findViewById(R.id.textAdd).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(TextUtils.isEmpty(bedNumber.getText().toString()) ||TextUtils.isEmpty(roomNumber.getText().toString()) ||
-                                    TextUtils.isEmpty(floor.getText().toString())){
-                                showToast(getApplicationContext(),"Please enter details in all the fields",R.color.red);
-                            }
-                            else if(status.getText().toString().equals("Choose Status")){
-                                showToast(getApplicationContext(),"Status Invalid, Please select the correct status",R.color.red);
-                            }
-                            else{
+                            if (TextUtils.isEmpty(bedNumber.getText().toString()) || TextUtils.isEmpty(roomNumber.getText().toString()) ||
+                                    TextUtils.isEmpty(floor.getText().toString())) {
+                                showToast(getApplicationContext(), "Please enter details in all the fields", R.color.red);
+                            } else if (status.getText().toString().equals("Choose Status")) {
+                                showToast(getApplicationContext(), "Status Invalid, Please select the correct status", R.color.red);
+                            } else {
                                 HashMap<String, Object> service = new HashMap<>();
                                 service.put("bedNumber", bedNumber.getText().toString());
                                 service.put("roomNumber", roomNumber.getText().toString());
@@ -148,10 +185,10 @@ public class BedsData extends AppCompatActivity {
                                             roomNumber.setText("");
                                             floor.setText("");
                                             status.setText("");
-                                            showToast(getApplicationContext(),"Data added",R.color.green);
+                                            showToast(getApplicationContext(), "Data added", R.color.green);
                                             dialogAddBed.dismiss();
-                                        }else{
-                                            showToast(getApplicationContext(),"Please try again",R.color.red);
+                                        } else {
+                                            showToast(getApplicationContext(), "Please try again", R.color.red);
                                         }
                                     }
                                 });
@@ -171,18 +208,85 @@ public class BedsData extends AppCompatActivity {
         });
 
     }
+
+    private void findSpecific() {
+
+        FirebaseRecyclerOptions<Beds> options = new FirebaseRecyclerOptions.Builder<Beds>()
+                .setQuery(eventsRef, Beds.class).build();
+
+        FirebaseRecyclerAdapter<Beds, BedDataHolder> adapter =
+                new FirebaseRecyclerAdapter<Beds, BedDataHolder>(options) {
+
+                    @Override
+                    protected void onBindViewHolder(@NonNull BedDataHolder holder, @SuppressLint("RecyclerView") final int position, @NonNull Beds model) {
+                        final String userIDs = getRef(position).getKey();
+
+                        assert userIDs != null;
+                        eventsRef.child(userIDs).addValueEventListener(new ValueEventListener() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists() || dataSnapshot.hasChildren()) {
+
+                                    Status = Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString();
+                                    Floor = Objects.requireNonNull(dataSnapshot.child("floorNumber").getValue()).toString();
+                                    if (Status.toLowerCase().contains(search.toLowerCase())) {
+                                        holder.userFloor.setText("Floor Number: " + Floor);
+                                        if (Status.equals("Available")) {
+                                            holder.userStatus.setTextColor(getResources().getColor(R.color.green));
+                                        } else {
+                                            holder.userStatus.setTextColor(getResources().getColor(R.color.red));
+                                        }
+                                        holder.userStatus.setText("Status: " + Status);
+                                    }else{
+                                        holder.linearLayout.setVisibility(View.GONE);
+                                        holder.userStatus.setVisibility(View.GONE);
+                                        holder.userFloor.setVisibility(View.GONE);
+                                        holder.userImage.setVisibility(View.GONE);
+                                    }
+                                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            visit_user_id = getRef(position).getKey();
+                                            getDetails();
+                                        }
+                                    });
+
+                                } else {
+                                    showToast(getApplicationContext(), "No Data", R.color.red);
+                                }
+                                loadingBar.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @NonNull
+                    @Override
+                    public BedDataHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_container_beds, viewGroup, false);
+
+                        return new BedDataHolder(view);
+                    }
+                };
+
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+    }
+
     private void VerifyData() {
         bottomSheetDialog.dismiss();
         eventsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()  || snapshot.hasChildren())
-                {
+                if (snapshot.exists() || snapshot.hasChildren()) {
                     display();
-                }
-                else
-                {
-                    showToast(getApplicationContext(),"No Data",R.color.red);
+                } else {
+                    showToast(getApplicationContext(), "No Data", R.color.red);
                     loadingBar.setVisibility(View.GONE);
                 }
             }
@@ -193,6 +297,7 @@ public class BedsData extends AppCompatActivity {
             }
         });
     }
+
     private void display() {
 
         FirebaseRecyclerOptions<Beds> options = new FirebaseRecyclerOptions.Builder<Beds>()
@@ -214,13 +319,13 @@ public class BedsData extends AppCompatActivity {
 
                                     Status = Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString();
                                     Floor = Objects.requireNonNull(dataSnapshot.child("floorNumber").getValue()).toString();
-                                    holder.userFloor.setText("Floor Number: "+Floor);
-                                    if(Status.equals("Available")){
+                                    holder.userFloor.setText("Floor Number: " + Floor);
+                                    if (Status.equals("Available")) {
                                         holder.userStatus.setTextColor(getResources().getColor(R.color.green));
-                                    }else{
+                                    } else {
                                         holder.userStatus.setTextColor(getResources().getColor(R.color.red));
                                     }
-                                    holder.userStatus.setText("Status: "+Status);
+                                    holder.userStatus.setText("Status: " + Status);
 
                                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -260,7 +365,7 @@ public class BedsData extends AppCompatActivity {
         eventsRef.child(visit_user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     Status = Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString();
                     Floor = Objects.requireNonNull(dataSnapshot.child("floorNumber").getValue()).toString();
                     Room = Objects.requireNonNull(dataSnapshot.child("bedNumber").getValue()).toString();
@@ -280,6 +385,7 @@ public class BedsData extends AppCompatActivity {
     public static class BedDataHolder extends RecyclerView.ViewHolder {
         TextView userFloor, userStatus;
         ImageView userImage;
+        LinearLayout linearLayout;
 
         public BedDataHolder(@NonNull View itemView) {
             super(itemView);
@@ -287,15 +393,17 @@ public class BedsData extends AppCompatActivity {
             userFloor = itemView.findViewById(R.id.textFloorNumber);
             userStatus = itemView.findViewById(R.id.textStatus);
             userImage = itemView.findViewById(R.id.image);
+            linearLayout = itemView.findViewById(R.id.layoutBeds);
         }
     }
+
     private void BottomSheet() {
 
         final View sheetView = LayoutInflater.from(BedsData.this).inflate(R.layout.beds_bottomsheet, findViewById(R.id.layoutMoreOptions));
 
-        final CardView Edit,Discard,Close,Save,Delete;
-        final GridLayout editingGrid,viewingGrid;
-        final TextView bedNumber,roomNumber,floor,status;
+        final CardView Edit, Discard, Close, Save, Delete;
+        final GridLayout editingGrid, viewingGrid;
+        final TextView bedNumber, roomNumber, floor, status;
         final LinearLayout statusLayout;
         String[] BedStrings;
         Spinner BedChoose;
@@ -314,10 +422,10 @@ public class BedsData extends AppCompatActivity {
         statusLayout = sheetView.findViewById(R.id.statusLayout);
         BedChoose = sheetView.findViewById(R.id.statusChoose);
 
-        bedNumber.setText("Bed Number: "+Bed);
-        roomNumber.setText("Room Number: "+Room);
-        floor.setText("Floor Number: "+Floor);
-        status.setText("Status: "+Status);
+        bedNumber.setText("Bed Number: " + Bed);
+        roomNumber.setText("Room Number: " + Room);
+        floor.setText("Floor Number: " + Floor);
+        status.setText("Status: " + Status);
 
         BedStrings = getResources().getStringArray(R.array.BedStatus);
 
@@ -353,12 +461,12 @@ public class BedsData extends AppCompatActivity {
         Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TextUtils.isEmpty(bedNumber.getText().toString()) || TextUtils.isEmpty(roomNumber.getText().toString()) ||
+                if (TextUtils.isEmpty(bedNumber.getText().toString()) || TextUtils.isEmpty(roomNumber.getText().toString()) ||
                         TextUtils.isEmpty(floor.getText().toString()) || TextUtils.isEmpty(status.getText().toString())) {
-                    showToast(getApplicationContext(),"You need to add data in all fields in order to add Bed",R.color.red);
-                }else if(status.getText().toString().equals("Choose Status")){
-                    showToast(getApplicationContext(),"Status Invalid, Please select the correct status",R.color.red);
-                }else{
+                    showToast(getApplicationContext(), "You need to add data in all fields in order to add Bed", R.color.red);
+                } else if (status.getText().toString().equals("Choose Status")) {
+                    showToast(getApplicationContext(), "Status Invalid, Please select the correct status", R.color.red);
+                } else {
                     bottomSheetDialog.dismiss();
                     VerifyData();
                     HashMap<String, Object> service = new HashMap<>();
@@ -370,9 +478,9 @@ public class BedsData extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                showToast(getApplicationContext(),"Data updated",R.color.green);
-                            }else{
-                                showToast(getApplicationContext(),"Please try again",R.color.red);
+                                showToast(getApplicationContext(), "Data updated", R.color.green);
+                            } else {
+                                showToast(getApplicationContext(), "Please try again", R.color.red);
                             }
                         }
                     });
@@ -388,9 +496,9 @@ public class BedsData extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            showToast(getApplicationContext(),"Data deleted",R.color.green);
-                        }else{
-                            showToast(getApplicationContext(),"Please try again",R.color.red);
+                            showToast(getApplicationContext(), "Data deleted", R.color.green);
+                        } else {
+                            showToast(getApplicationContext(), "Please try again", R.color.red);
                         }
                     }
                 });
@@ -401,5 +509,28 @@ public class BedsData extends AppCompatActivity {
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
+    }
+
+    private void Info() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(BedsData.this, R.style.AlertDialog);
+        builder.setTitle("Note");
+        builder.setCancelable(false);
+
+        final TextView groupNameField = new TextView(BedsData.this);
+        groupNameField.setText("1) The details mentioned are in the following order \n\n--> Bed number --> Room number \n--> Floor number --> Status \n\n2) You can edit the status of the bed and also delete the bed.");
+        groupNameField.setPadding(20, 30, 20, 20);
+        groupNameField.setTextColor(Color.BLACK);
+
+        groupNameField.setBackgroundColor(Color.WHITE);
+        builder.setView(groupNameField);
+
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

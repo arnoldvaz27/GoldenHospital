@@ -1,0 +1,11 @@
+<resources>
+    <string name="enter_your_details">Enter your details :</string>
+    <string name="disease_name">Disease Name</string>
+    <string name="save">Save</string>
+    <string name="login_or_register_as">Login or Register as :</string>
+    <string name="todo">TODO</string>
+    <string name="staff">Staff</string>
+    <string name="patient">Patient</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+</resources>

@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -40,7 +42,8 @@ public class ServiceDoctorData extends AppCompatActivity {
     private AlertDialog dialogAddService;
     EditText serviceName, startDate,inputSearch;
     ImageView startDateImage;
-    String search;
+    String search;    ImageView info;
+
     private RecyclerView recyclerView;
     private DatabaseReference eventsRef;
     private ProgressBar loadingBar;
@@ -53,11 +56,19 @@ public class ServiceDoctorData extends AppCompatActivity {
         recyclerView = binding.RecyclerView;
         inputSearch = binding.inputSearch;
         loadingBar = binding.progressCircular;
+        info = binding.info;
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventsRef = FirebaseDatabase.getInstance().getReference().child("Services");
 
         VerifyData();
+
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Info();
+            }
+        });
 
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -224,5 +235,27 @@ public class ServiceDoctorData extends AppCompatActivity {
             userImage = itemView.findViewById(R.id.image);
             layoutService = itemView.findViewById(R.id.layoutService);
         }
+    }
+    private void Info() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(ServiceDoctorData.this, R.style.AlertDialog);
+        builder.setTitle("Note");
+        builder.setCancelable(false);
+
+        final TextView groupNameField = new TextView(ServiceDoctorData.this);
+        groupNameField.setText("1) The details mentioned are in the following order \n\n--> Service Name --> Service Start Date \n\n2) This section is used to display all the services that are provided by the hospital.");
+        groupNameField.setPadding(20,30,20,20);
+        groupNameField.setTextColor(Color.BLACK);
+
+        groupNameField.setBackgroundColor(Color.WHITE);
+        builder.setView(groupNameField);
+
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

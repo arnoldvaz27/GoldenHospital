@@ -4,6 +4,15 @@
 
     <application>
         <activity
+            android:name=".Management_Profile"
+            android:exported="true" />
+        <activity
+            android:name=".ManagementPatientData"
+            android:exported="true" />
+        <activity
+            android:name=".NurseData"
+            android:exported="true" />
+        <activity
             android:name=".MedicineData"
             android:exported="true" />
         <activity
@@ -23,7 +32,8 @@
             android:exported="true" />
         <activity
             android:name=".ManagementHome"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

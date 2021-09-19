@@ -55,7 +55,7 @@
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:textSize="@dimen/_14sdp"
-                android:text="Login or Register as : "
+                android:text="@string/login_or_register_as"
                 android:textAlignment="center"
                 android:textColor="@color/red"
                 android:textStyle="bold" />
@@ -94,7 +94,7 @@
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_70sdp"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:contentDescription="TODO"
+                            android:contentDescription="@string/todo"
                             android:src="@drawable/hospital" />
 
                         <TextView
@@ -102,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
-                            android:text="Staff"
+                            android:text="@string/staff"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
@@ -133,7 +133,7 @@
                             android:layout_width="@dimen/_70sdp"
                             android:layout_height="@dimen/_70sdp"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:contentDescription="TODO"
+                            android:contentDescription="@string/todo"
                             android:src="@drawable/patients" />
 
                         <TextView
@@ -141,7 +141,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
-                            android:text="Patient"
+                            android:text="@string/patient"
                             android:textAlignment="center"
                             android:textColor="@color/white"
                             android:textStyle="bold" />
@@ -151,11 +151,63 @@
 
             </GridLayout>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/savingLinear"
+            android:layout_below="@+id/selectRole"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:background="@drawable/round_style"
+            android:backgroundTint="@color/Best"
+            android:padding="@dimen/_5sdp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                tools:ignore="UselessParent">
 
+                <Button
+                    android:id="@+id/Login"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_style"
+                    android:backgroundTint="@color/yellow"
+                    android:fontFamily="@font/bold_letters"
+                    android:text="@string/login"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    style="?android:attr/buttonBarButtonStyle" />
+
+                <Button
+                    android:id="@+id/Register"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_style"
+                    android:backgroundTint="@color/green"
+                    android:fontFamily="@font/bold_letters"
+                    android:text="@string/register"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    style="?android:attr/buttonBarButtonStyle" />
+
+            </LinearLayout>
+        </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/selectRole">
+            android:layout_below="@id/savingLinear">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

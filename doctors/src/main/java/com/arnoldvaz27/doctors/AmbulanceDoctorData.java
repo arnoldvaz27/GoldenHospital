@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -52,7 +54,8 @@ public class AmbulanceDoctorData extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DatabaseReference eventsRef;
     private ProgressBar loadingBar;
-    private EditText inputSearch;
+    private EditText inputSearch;    ImageView info;
+
     private BottomSheetDialog bottomSheetDialog;
     private String ambulanceStatusItem,search;
     String ambulanceStatusString, NumberPlate, Status, visit_user_id, Email, Persons, PhoneNumber;
@@ -66,13 +69,20 @@ public class AmbulanceDoctorData extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.ambulance_doctor_data);
         recyclerView = binding.RecyclerView;
         loadingBar = binding.progressCircular;
-        inputSearch = binding.inputSearch;
+        inputSearch = binding.inputSearch;        info = binding.info;
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventsRef = FirebaseDatabase.getInstance().getReference().child("Ambulance");
         bottomSheetDialog = new BottomSheetDialog(AmbulanceDoctorData.this, R.style.BottomSheetTheme);
         bottomSheetDialog.setCanceledOnTouchOutside(false);
         VerifyData();
 
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Info();
+            }
+        });
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -340,14 +350,15 @@ public class AmbulanceDoctorData extends AppCompatActivity {
 
             }
         });
-
-        Edit.setOnClickListener(v -> {
+        Edit.setVisibility(View.INVISIBLE);
+        Delete.setVisibility(View.INVISIBLE);
+        /*Edit.setOnClickListener(v -> {
             viewingGrid.setVisibility(View.GONE);
             editingGrid.setVisibility(View.VISIBLE);
             statusLayout.setVisibility(View.VISIBLE);
-        });
+        });*/
         Close.setOnClickListener(v -> bottomSheetDialog.cancel());
-        Delete.setOnClickListener(new View.OnClickListener() {
+/*        Delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
@@ -404,10 +415,32 @@ public class AmbulanceDoctorData extends AppCompatActivity {
                     });
                 }
             }
-        });
+        });*/
         Discard.setOnClickListener(v -> bottomSheetDialog.cancel());
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
+    }
+    private void Info() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(AmbulanceDoctorData.this, R.style.AlertDialog);
+        builder.setTitle("Note");
+        builder.setCancelable(false);
+
+        final TextView groupNameField = new TextView(AmbulanceDoctorData.this);
+        groupNameField.setText("1) The details mentioned are in the following order \n\n--> Ambulance number --> Number of persons --> Email --> phone number --> Status");
+        groupNameField.setPadding(20, 30, 20, 20);
+        groupNameField.setTextColor(Color.BLACK);
+
+        groupNameField.setBackgroundColor(Color.WHITE);
+        builder.setView(groupNameField);
+
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

@@ -80,4 +80,7 @@
     <string name="enter_stock_of_medicine">Stock of medicine</string>
     <string name="enter_stock_expiry_date">Expiry date</string>
     <string name="stock_arrived">Arrived date</string>
+    <string name="nurse_name">Nurse Name</string>
+    <string name="date_joined">Date Joined</string>
+    <string name="search_patients">Search Patients</string>
 </resources>

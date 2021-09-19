@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -55,8 +57,10 @@ public class AmbulanceNurseData extends AppCompatActivity {
     private DatabaseReference eventsRef;
     private ProgressBar loadingBar;
     private EditText inputSearch;
+    ImageView info;
+
     private BottomSheetDialog bottomSheetDialog;
-    private String ambulanceStatusItem,search;
+    private String ambulanceStatusItem, search;
     String ambulanceStatusString, NumberPlate, Status, visit_user_id, Email, Persons, PhoneNumber;
     private final Pattern pattern1 = Pattern.compile("^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\\.([a-zA-Z])+([a-zA-Z])+");
 
@@ -70,12 +74,20 @@ public class AmbulanceNurseData extends AppCompatActivity {
         recyclerView = binding.RecyclerView;
         loadingBar = binding.progressCircular;
         inputSearch = binding.inputSearch;
+        info = binding.info;
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         eventsRef = FirebaseDatabase.getInstance().getReference().child("Ambulance");
         bottomSheetDialog = new BottomSheetDialog(AmbulanceNurseData.this, R.style.BottomSheetTheme);
         bottomSheetDialog.setCanceledOnTouchOutside(false);
         VerifyData();
 
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Info();
+            }
+        });
         inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,15 +101,16 @@ public class AmbulanceNurseData extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().equals("")){
+                if (!s.toString().equals("")) {
                     search = s.toString();
                     findSpecific();
-                }else{
+                } else {
                     VerifyData();
                 }
             }
         });
     }
+
     private void findSpecific() {
         FirebaseRecyclerOptions<Ambulances> options = new FirebaseRecyclerOptions.Builder<Ambulances>()
                 .setQuery(eventsRef, Ambulances.class).build();
@@ -119,7 +132,7 @@ public class AmbulanceNurseData extends AppCompatActivity {
                                     Status = Objects.requireNonNull(dataSnapshot.child("status").getValue()).toString();
                                     NumberPlate = Objects.requireNonNull(dataSnapshot.child("numberPlate").getValue()).toString();
 
-                                    if(NumberPlate.toLowerCase().contains(search.toLowerCase())){
+                                    if (NumberPlate.toLowerCase().contains(search.toLowerCase())) {
                                         holder.userNumberPlate.setText(NumberPlate);
                                         if (Status.equals("Available")) {
                                             holder.userStatus.setTextColor(getResources().getColor(R.color.green));
@@ -127,7 +140,7 @@ public class AmbulanceNurseData extends AppCompatActivity {
                                             holder.userStatus.setTextColor(getResources().getColor(R.color.red));
                                         }
                                         holder.userStatus.setText("Status: " + Status);
-                                    }else{
+                                    } else {
                                         holder.layoutAmbulance.setVisibility(View.GONE);
                                         holder.userStatus.setVisibility(View.GONE);
                                         holder.userNumberPlate.setVisibility(View.GONE);
@@ -177,7 +190,6 @@ public class AmbulanceNurseData extends AppCompatActivity {
                 if (snapshot.exists() || snapshot.hasChildren()) {
                     display();
                 } else {
-                    showToast(getApplicationContext(), "No Data", R.color.red);
                     loadingBar.setVisibility(View.GONE);
                 }
 
@@ -412,5 +424,28 @@ public class AmbulanceNurseData extends AppCompatActivity {
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
+    }
+
+    private void Info() {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(AmbulanceNurseData.this, R.style.AlertDialog);
+        builder.setTitle("Note");
+        builder.setCancelable(false);
+
+        final TextView groupNameField = new TextView(AmbulanceNurseData.this);
+        groupNameField.setText("1) The details mentioned are in the following order \n\n--> Ambulance number --> Number of persons --> Email --> phone number --> Status");
+        groupNameField.setPadding(20, 30, 20, 20);
+        groupNameField.setTextColor(Color.BLACK);
+
+        groupNameField.setBackgroundColor(Color.WHITE);
+        builder.setView(groupNameField);
+
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.show();
     }
 }

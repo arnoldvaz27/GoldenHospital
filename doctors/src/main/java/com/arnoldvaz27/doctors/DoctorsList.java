@@ -189,7 +189,6 @@ public class DoctorsList extends AppCompatActivity {
         Edit.setOnClickListener(v -> {
             bottomSheetDialog.cancel();
             startActivity(new Intent(getApplicationContext(),DoctorsProfile.class));
-            finish();
         });
         Close.setOnClickListener(v -> bottomSheetDialog.cancel());
         bottomSheetDialog.setContentView(sheetView);

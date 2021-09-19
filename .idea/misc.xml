@@ -13,6 +13,8 @@
         <entry key="..\:/AndroidProjects/GoldenHospital/app/src/main/res/layout/driverdetail.xml" value="0.2" />
         <entry key="..\:/AndroidProjects/GoldenHospital/app/src/main/res/layout/management.xml" value="0.22" />
         <entry key="..\:/AndroidProjects/GoldenHospital/app/src/main/res/layout/nursedetails.xml" value="0.2" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/app/src/main/res/layout/patient.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/app/src/main/res/layout/patient_details.xml" value="0.1712962962962963" />
         <entry key="..\:/AndroidProjects/GoldenHospital/app/src/main/res/layout/patientdetails.xml" value="0.22" />
         <entry key="..\:/AndroidProjects/GoldenHospital/app/src/main/res/layout/role.xml" value="0.2" />
         <entry key="..\:/AndroidProjects/GoldenHospital/app/src/main/res/layout/splash_screen.xml" value="0.20520833333333333" />
@@ -26,6 +28,7 @@
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/drawable/background_doctors.xml" value="0.21296296296296297" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/drawable/background_miscellaneous.xml" value="0.21794871794871795" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/drawable/background_search.xml" value="0.21296296296296297" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/drawable/round_style.xml" value="0.2111111111111111" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/drawable/search.xml" value="0.21296296296296297" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/drawable/single_user_icon.xml" value="0.20925925925925926" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/ambulance_bottomsheet.xml" value="0.18518518518518517" />
@@ -36,15 +39,28 @@
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/doctors_bottomsheet.xml" value="0.18518518518518517" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/doctors_home.xml" value="0.19114583333333332" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/doctors_list.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/doctors_profile.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/item_container_ambulance.xml" value="0.17037037037037037" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/item_container_beds.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/item_container_canteen.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/item_container_doctors.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/item_container_medicines.xml" value="0.17037037037037037" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/item_container_nurses.xml" value="0.17592592592592593" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/item_container_patient.xml" value="0.16666666666666666" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/item_container_service.xml" value="0.2" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/logout.xml" value="0.19114583333333332" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/medicine_bottomsheet.xml" value="0.17222222222222222" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/medicines_doctor_data.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/nurse_bottomsheet.xml" value="0.2" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/nurse_doctors_data.xml" value="0.1712962962962963" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/patient_bottomsheet.xml" value="0.16666666666666666" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/patient_doctor_data.xml" value="0.16666666666666666" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/service_doctor_data.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/layout/toast.xml" value="0.18055555555555555" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/menu/doctor_appointed.xml" value="0.17222222222222222" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/menu/patient_select.xml" value="0.17222222222222222" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/menu/settings_file.xml" value="0.17222222222222222" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/doctors/src/main/res/menu/treatment_type.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/activity_doctors_data.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/ambulance_bottomsheet.xml" value="0.17037037037037037" />
         <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/ambulance_data.xml" value="0.20520833333333333" />
@@ -63,14 +79,25 @@
         <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/layout_add_medicines.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/layout_add_servicedata.xml" value="0.2" />
         <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/management_home.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/management_patient_data.xml" value="0.19114583333333332" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/management_profile.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/medicine_data.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/nurse_data.xml" value="0.1712962962962963" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/service_nurse_data.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/management/src/main/res/layout/services_data.xml" value="0.19114583333333332" />
         <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/ambulance_nurse_data.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/beds_nurse_data.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/canteen_nurse_data.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/doctors_nurse_data.xml" value="0.17222222222222222" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/doctors_nurse_list.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/medicine_nurse_data.xml" value="0.18425925925925926" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/nurse_doctors_data.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/nurse_home.xml" value="0.18055555555555555" />
         <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/nurse_list.xml" value="0.19114583333333332" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/nurse_profile.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/patient_nurse_data.xml" value="0.1962962962962963" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/nurses/src/main/res/layout/service_nurse_data.xml" value="0.18611111111111112" />
+        <entry key="..\:/AndroidProjects/GoldenHospital/patients/src/main/res/layout/patient_home.xml" value="0.20520833333333333" />
       </map>
     </option>
   </component>

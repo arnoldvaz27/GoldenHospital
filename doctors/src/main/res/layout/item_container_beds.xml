@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:id="@+id/layoutDoctors"
+    android:id="@+id/layoutBeds"
     android:weightSum="2"
     android:layout_marginStart="@dimen/_12sdp"
     android:layout_marginTop="@dimen/_12sdp"

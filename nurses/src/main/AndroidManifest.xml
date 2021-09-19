@@ -4,10 +4,25 @@
 
     <application>
         <activity
+            android:name=".NurseProfile"
+            android:exported="true" />
+        <activity
+            android:name=".PatientNurseData"
+            android:exported="true" />
+        <activity
+            android:name=".NurseList"
+            android:exported="true" />
+        <activity
+            android:name=".DoctorsNurseData"
+            android:exported="true" />
+        <activity
             android:name=".CanteenNurseData"
             android:exported="true" />
         <activity
             android:name=".MedicineNurseData"
+            android:exported="true" />
+        <activity
+            android:name=".ServiceNurseData"
             android:exported="true" />
         <activity
             android:name=".BedsNurseData"
@@ -17,6 +32,10 @@
             android:exported="true" />
         <activity
             android:name=".NurseHome"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".DoctorsNurseList"
             android:exported="true" />
     </application>
 
